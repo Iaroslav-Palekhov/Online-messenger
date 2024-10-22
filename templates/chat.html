@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/css/style.css">
+    <title>Chat with {{ recipient.username }}</title>
+    <style>
+        body{
+            background: lightskyblue;
+        }
+        h1{
+            color: coral;
+            text-align: center;
+        }
+        .button{
+            font-size: 29px;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: lightseagreen;
+            color: whitesmoke;
+            margin-top: 9px;
+            border-radius: 20px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chat with {{ recipient.username }}</h1>
+    <ul>
+        {% for message in messages %}
+            <li>
+                <strong>
+                    {% if message.user_id == session['user_id'] %}
+                        You:
+                    {% else %}
+                        {{ recipient.username }}:
+                    {% endif %}
+                </strong> {{ message.content }}
+            </li>
+        {% endfor %}
+    </ul>
+    <form method="POST" action="{{ url_for('messages') }}">
+        <input type="hidden" name="recipient" value="{{ recipient.username }}">
+        <textarea name="content" placeholder="Type your message here..." required></textarea>
+        <button type="submit">Send Message</button>
+    </form>
+    <a class="button" href="{{ url_for('messages') }}">Back to Messages</a>
+    <a class="button" href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>
